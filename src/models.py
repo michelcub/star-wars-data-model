@@ -7,26 +7,63 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-class Person(Base):
-    __tablename__ = 'person'
-    # Here we define columns for the table person
-    # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, primary_key=True)
-    name = Column(String(250), nullable=False)
 
-class Address(Base):
-    __tablename__ = 'address'
-    # Here we define columns for the table address.
-    # Notice that each column is also a normal Python instance attribute.
+class User(Base):
+    __tablename__ = "user"
     id = Column(Integer, primary_key=True)
-    street_name = Column(String(250))
-    street_number = Column(String(250))
-    post_code = Column(String(250), nullable=False)
-    person_id = Column(Integer, ForeignKey('person.id'))
-    person = relationship(Person)
+    nickname = Column(String, nullable=False)
+    email = Column(String, nullable=False, unique=True)
 
-    def to_dict(self):
-        return {}
+class Planet(Base):
+    __tablename__ = "planet"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False, unique=True)
+    url = Column(String, nullable=False, unique=True)
+
+class Planet_Properties(Base):
+    __tablename__ = "planet_properties"
+    id = Column(Integer, primary_key=True)
+    planet_id = Column(ForeignKey('planet.id'))
+    name = Column(ForeignKey('planet.name'))
+    climate = Column(String, nullable=False)
+    created = Column(String, nullable=False)
+    diameter = Column(String, nullable=False)
+    films = Column(String, nullable=False)
+    gravity = Column(String, nullable=False)
+    orbital_period = Column(Integer, nullable=False)
+    population = Column(Integer, nullable=False)
+    residents = Column(String, nullable=False)
+    rotation_period = Column(Integer, nullable=False)
+    surface_water = Column(Integer, nullable=False)
+    terrain = Column(String, nullable=False)
+    url = Column(String, nullable=False, unique=True)
+
+
+class Vehicle(Base):
+    __tablename__ = "vehicle"
+    id = Column(Integer, primary_key=True)
+    name = Column(String, nullable=False, unique=True)
+    url = Column(String, nullable=False, unique=True)  
+
+class Vehicle_Properties(Base):
+    __tablename__ = "vehicle_properties"
+    id = Column(Integer, primary_key=True)
+    vehicle_id = Column(ForeignKey('vehicle.id'))
+    name = Column(ForeignKey('vehicle.name'))
+    cargo_capacity = Column(Integer, nullable=False)
+    created = Column(String, nullable=False)
+    crew = Column(Integer, nullable=False)
+    length = Column(String, nullable=False)
+    manufacturer = Column(String, nullable=False)
+    max_atmosphering_speed = Column(Integer, nullable=False)
+    model = Column(String, nullable=False)
+    vehicle_class = Column(String, nullable=False)
+    passengers = Column(Integer, nullable=False)
+    pilots = Column(String, nullable=False)
+    films = Column(String, nullable=False)
+    url = Column(String, nullable=False)    
+
+
 
 ## Draw from SQLAlchemy base
-render_er(Base, 'diagram.png')
+render_er(Base, "diagram.png")
