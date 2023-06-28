@@ -1,6 +1,6 @@
 import os
 import sys
-from sqlalchemy import Column, ForeignKey, Integer, String
+from sqlalchemy import Column, ForeignKey, Integer, String, DateTime
 from sqlalchemy.orm import relationship, declarative_base
 from sqlalchemy import create_engine
 from eralchemy2 import render_er
@@ -36,6 +36,8 @@ class Planet_Properties(Base):
     rotation_period = Column(Integer, nullable=False)
     surface_water = Column(Integer, nullable=False)
     terrain = Column(String, nullable=False)
+    created=Column(DateTime, nullable=False)
+    edited= Column(DateTime, nullable=False)
     url = Column(String, nullable=False, unique=True)
 
 
@@ -61,7 +63,9 @@ class Vehicle_Properties(Base):
     passengers = Column(Integer, nullable=False)
     pilots = Column(String, nullable=False)
     films = Column(String, nullable=False)
-    url = Column(String, nullable=False)    
+    url = Column(String, nullable=False)
+    created=Column(DateTime, nullable=False)
+    edited= Column(DateTime, nullable=False) 
 
 
 
