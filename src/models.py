@@ -7,7 +7,6 @@ from eralchemy2 import render_er
 
 Base = declarative_base()
 
-
 class User(Base):
     __tablename__ = "user"
     id = Column(Integer, primary_key=True)
@@ -19,18 +18,17 @@ class Favorites(Base):
     __tablename__ = "favorites"
     id = Column(Integer, primary_key=True)
     user_id = Column(Integer, ForeignKey('user.id'))
-    user_id = Column(Integer, ForeignKey('planet.id'))
-    user_id = Column(Integer, ForeignKey('character.id'))
-    user_id = Column(Integer, ForeignKey('vehicles.id'))
+    planet_id = Column(Integer, ForeignKey('planet.id'))
+    character_id = Column(Integer, ForeignKey('character.id'))
+    vehicle_id = Column(Integer, ForeignKey('vehicle.id'))
 
 class Planet(Base):
     __tablename__ = "planet"
     id = Column(Integer, primary_key=True)
-    user_id = 
     name = Column(String, nullable=False, unique=True)
     url = Column(String, nullable=False, unique=True)
     favorites = relationship('Favorites', backref='planet', lazy=True)
-    planet_properties = relationship('Planet_Properties', populates="Planet" , lazy=True)
+    planet_properties = relationship('Planet_Properties', back_populates="planet" , lazy=True)
 
 class Planet_Properties(Base):
     __tablename__ = "planet_properties"
@@ -51,8 +49,7 @@ class Planet_Properties(Base):
     created=Column(DateTime, nullable=False)
     edited= Column(DateTime, nullable=False)
     url = Column(String, nullable=False, unique=True)
-    planet = relationship('Planet', populates="Planet_Properties" , lazy=True)
-
+    planet = relationship('Planet', back_populates="planet_properties" , lazy=True)
 
 class Vehicle(Base):
     __tablename__ = "vehicle"
@@ -60,7 +57,7 @@ class Vehicle(Base):
     name = Column(String, nullable=False, unique=True)
     url = Column(String, nullable=False, unique=True)
     favorites = relationship('Favorites', backref='vehicle', lazy=True) 
-    vehicle_properties = relationship('Vehicle_Properties', populates="Vehicle" , lazy=True) 
+    vehicle_properties = relationship('Vehicle_Properties', back_populates="vehicle" , lazy=True) 
 
 class Vehicle_Properties(Base):
     __tablename__ = "vehicle_properties"
@@ -81,20 +78,20 @@ class Vehicle_Properties(Base):
     url = Column(String, nullable=False)
     created=Column(DateTime, nullable=False)
     edited= Column(DateTime, nullable=False)
-    vehicle_properties = relationship('Vehicle', populates="Vehicle_Properties" , lazy=True)  
+    vehicle= relationship('Vehicle', back_populates="vehicle_properties" , lazy=True)  
 
 class Character(Base):
-    __table_name__ = 'character'
+    __tablename__ = 'character'
     id = Column(Integer, primary_key=True)
     name = Column(String)
     url = Column(String)
     favorites = relationship('Favorites', backref='character', lazy=True)
-    character_properties = relationship('Character_Properties', populates='character', lazy=True)
+    character_properties = relationship('Character_Properties', back_populates='character', lazy=True)
 
 class Character_Properties(Base):
-    __table_name__ = "character_properties"
+    __tablename__ = "character_properties"
     id = Column(Integer, primary_key=True)
-    character_id = Column(ForeignKey('Character.id'))
+    character_id = Column(ForeignKey('character.id'))
     cargo_capacity = Column(String, nullable=False)
     consumables = Column(String, nullable=False)
     crew = Column(String, nullable=False)
@@ -107,7 +104,7 @@ class Character_Properties(Base):
     url = Column(String, nullable=False)
     created = Column(DateTime)
     edited = Column(DateTime)
-    character = relationship('Character', populates='character_properties', lazy=True)
+    character = relationship('Character', back_populates='character_properties', lazy=True)
 
 ## Draw from SQLAlchemy base
 render_er(Base, "diagram.png")
